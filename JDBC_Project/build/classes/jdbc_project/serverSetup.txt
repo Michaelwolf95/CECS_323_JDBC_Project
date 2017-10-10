@@ -1,0 +1,35 @@
+create table writingGroups(
+groupName varchar(100) NOT NULL,
+headWriter varchar(100) NOT NULL,
+yearFormed int,
+subject varchar(100),
+CONSTRAINT wg_pk PRIMARY KEY (groupName));
+
+CREATE TABLE publishers(
+publisherName varchar(100) NOT NULL,
+publisherAddress varchar(100),
+publisherPhone int,
+publisherEmail varchar(100),
+CONSTRAINT pub_pk PRIMARY KEY (publisherName));
+
+CREATE TABLE books(
+groupName varchar(100) NOT NULL,
+bookTitle varchar(100) NOT NULL,
+publisherName varchar(100) NOT NULL,
+yearPublished int,
+numberPages int,
+CONSTRAINT book_pk PRIMARY KEY (groupName, bookTitle),
+CONSTRAINT book_uq01 UNIQUE (bookTitle, publisherName),
+CONSTRAINT book_fk01 FOREIGN KEY(publisherName) REFERENCES publishers (publisherName),
+CONSTRAINT book_fk02 FOREIGN KEY(groupName) REFERENCES writingGroups(groupName));
+
+insert into writingGroups(groupName, headWriter, yearFormed, subject) values
+('Coffee House Writers', 'James Leviathan', 1952, 'Ancient Civilizations'),
+('Rhondas Books', 'Rhonda Filmore', 2005, 'Flow Mechanics'),
+('Edison & Co.', 'Edie Jets', 1852, 'Architecture') ;
+
+insert INTO publishers(publisherName, publisherAddress, publisherPhone, publisherEmail) values
+('Akashic Books', '123 Springfield St.', 318-555-0892, 'customerhelp@akashicbooks.com');
+
+INSERT INTO book(groupName, bookTitle, publisherName, yearPublished, numberPages) values
+('Coffee House Writers', 'The Last Basket Ever Woven', 'Akashic Books', 2017, 9425);
