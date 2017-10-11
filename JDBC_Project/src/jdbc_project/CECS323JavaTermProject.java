@@ -23,7 +23,7 @@ public class CECS323JavaTermProject {
     //The number indicates how wide to make the field.
     //The "s" denotes that it's a string.  All of our output in this test are 
     //strings, but that won't always be the case.
-    static final String displayFormat="%-5s%-15s%-15s%-15s\n";
+    static final String displayFormat="%-30s%-30s%-30s%-30s\n";
 // JDBC driver name and database URL
     static final String JDBC_DRIVER = "org.apache.derby.jdbc.ClientDriver";
     static String DB_URL = "jdbc:derby://localhost:1527/";
@@ -47,15 +47,19 @@ public class CECS323JavaTermProject {
         //remove that from the connection string.
         Scanner in = new Scanner(System.in);
         System.out.print("Name of the database (not the user account): ");
-        DBNAME = in.nextLine();
+        //DBNAME = in.nextLine();
+        DBNAME = "JDBC_Project";
         System.out.print("Database user name: ");
-        USER = in.nextLine();
+        //USER = in.nextLine();
+        USER = "michaelwolf95";
         System.out.print("Database password: ");
-        PASS = in.nextLine();
+        //PASS = in.nextLine();
+        PASS = "password";
+        
         //Constructing the database URL connection string
         DB_URL = DB_URL + DBNAME + ";user="+ USER + ";password=" + PASS;
         Connection conn = null; //initialize the connection
-        Statement stmt = null;  //initialize the statement that we're using
+        //Statement stmt = null;  //initialize the statement that we're using
         try {
             //STEP 2: Register JDBC driver
             Class.forName("org.apache.derby.jdbc.ClientDriver");
@@ -63,35 +67,10 @@ public class CECS323JavaTermProject {
             //STEP 3: Open a connection
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL);
-
-            //STEP 4: Execute a query
-            System.out.println("Creating statement...");
-            stmt = conn.createStatement();
-            String sql;
             
-            // USE PREPARED STATEMENTS
-            
-            //
-            
-            sql = "SELECT au_id, au_fname, au_lname, phone FROM Authors";
-            ResultSet rs = stmt.executeQuery(sql);
+            //JDBC_DatabaseTools.TEST_METHOD(conn);
+            JDBC_DatabaseTools.LIST_RESULTS(conn, "books", new String[]{"groupName","bookTitle" });
 
-            //STEP 5: Extract data from result set
-            System.out.printf(displayFormat, "ID", "First Name", "Last Name", "Phone #");
-            while (rs.next()) {
-                //Retrieve by column name
-                String id = rs.getString("au_id");
-                String phone = rs.getString("phone");
-                String first = rs.getString("au_fname");
-                String last = rs.getString("au_lname");
-
-                //Display values
-                System.out.printf(displayFormat, 
-                        dispNull(id), dispNull(first), dispNull(last), dispNull(phone));
-            }
-            //STEP 6: Clean-up environment
-            rs.close();
-            stmt.close();
             conn.close();
         } catch (SQLException se) {
             //Handle errors for JDBC
@@ -101,12 +80,6 @@ public class CECS323JavaTermProject {
             e.printStackTrace();
         } finally {
             //finally block used to close resources
-            try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException se2) {
-            }// nothing we can do
             try {
                 if (conn != null) {
                     conn.close();
