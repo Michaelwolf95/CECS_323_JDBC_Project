@@ -15,7 +15,8 @@ import java.util.Scanner;
 public class JDBC_DatabaseTools 
 {
     static final String displayFormat="%-30s%-30s%-30s%-30s\n";
-    public static String dispNull (String input) {
+    public static String dispNull (String input) 
+    {
         if (input == null || input.length() == 0)
             return "N/A";
         else

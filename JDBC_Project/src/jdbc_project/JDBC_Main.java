@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jdbc_project;
 
 import java.sql.*;
@@ -10,9 +5,9 @@ import java.util.Scanner;
 
 /**
  *
- * @author Mimi Opkins with some tweaking from Dave Brown
+ * @author Michael Wolf
  */
-public class CECS323JavaTermProject 
+public class JDBC_Main 
 {
     //  Database credentials
     static String USER = DATABASE_INFO.USER;
@@ -22,21 +17,7 @@ public class CECS323JavaTermProject
     // JDBC driver name and database URL
     static final String JDBC_DRIVER = "org.apache.derby.jdbc.ClientDriver";
     static String DB_URL = "jdbc:derby://localhost:1527/";
-//            + "testdb;user=";
 
-    public static void GetDataBaseInfoFromInput()
-    {
-        //Prompt the user for the database name, and the credentials.
-        //If your database has no credentials, you can update this code to 
-        //remove that from the connection string.
-        Scanner in = new Scanner(System.in);
-        System.out.print("Name of the database (not the user account): ");
-        DBNAME = in.nextLine();
-        System.out.print("Database user name: ");
-        USER = in.nextLine();
-        System.out.print("Database password: ");
-        PASS = in.nextLine();
-    }
     
     public static void main(String[] args) 
     {
@@ -47,16 +28,15 @@ public class CECS323JavaTermProject
         Connection conn = null; //initialize the connection
         try 
         {
-            //STEP 2: Register JDBC driver
             Class.forName("org.apache.derby.jdbc.ClientDriver");
-
-            //STEP 3: Open a connection
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL);
             
-            //JDBC_DatabaseTools.TEST_METHOD(conn);
-            JDBC_DatabaseTools.LIST_RESULTS(conn, "books", new String[]{"groupName","bookTitle" });
+            
+            JDBC_TestApp.RunDataBaseApplication(conn);
+            //JDBC_DatabaseTools.LIST_RESULTS(conn, "books", new String[]{"groupName","bookTitle" });
 
+            
             conn.close();
         } 
         catch (SQLException se) {
@@ -77,4 +57,19 @@ public class CECS323JavaTermProject
         }//end try
         System.out.println("Goodbye!");
     }//end main
+    
+    
+    public static void GetDataBaseInfoFromInput()
+    {
+        //Prompt the user for the database name, and the credentials.
+        //If your database has no credentials, you can update this code to 
+        //remove that from the connection string.
+        Scanner in = new Scanner(System.in);
+        System.out.print("Name of the database (not the user account): ");
+        DBNAME = in.nextLine();
+        System.out.print("Database user name: ");
+        USER = in.nextLine();
+        System.out.print("Database password: ");
+        PASS = in.nextLine();
+    }
 }
