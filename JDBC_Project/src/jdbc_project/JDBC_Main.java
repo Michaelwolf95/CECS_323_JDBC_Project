@@ -34,8 +34,6 @@ public class JDBC_Main
             
             
             JDBC_TestApp.RunDataBaseApplication(conn);
-            //JDBC_DatabaseTools.LIST_RESULTS(conn, "books", new String[]{"groupName","bookTitle" });
-
             
             conn.close();
         } 

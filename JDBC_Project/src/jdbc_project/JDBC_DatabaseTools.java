@@ -108,4 +108,56 @@ public class JDBC_DatabaseTools
             } catch (SQLException se2) { }
         }
     }
+    public static void INSERT_ROW(Connection conn, String tableName, String[] attributeNames, String[] valueNames)
+    {
+        Statement stmt = null;
+        try 
+        {       
+            stmt = conn.createStatement();
+            String sql;
+            
+            // USE PREPARED STATEMENTS
+
+            sql = "INSERT INTO " + tableName + " (";
+            for (int i = 0; i < attributeNames.length - 1; i++) 
+            {
+                sql += attributeNames[i] + ", ";
+            }
+            sql += attributeNames[attributeNames.length - 1] + ")";
+            sql += " VALUES (";
+            for (int i = 0; i < valueNames.length - 1; i++) 
+            {
+                sql += "'" + valueNames[i] + "'" + ", ";
+            }
+            sql += "'" +valueNames[valueNames.length - 1] + "')";
+            
+            //ResultSet rs = null;
+            System.out.printf(sql);
+            //rs = 
+            //stmt.
+            stmt.execute(sql);
+            //System.out.printf(displayFormat, "groupName", "bookTitle", "publisherName", "yearPublished");
+
+//            while (rs.next()) 
+//            {
+//                String output = "";
+//                for (int i = 0; i < attributeNames.length; i++) 
+//                {
+//                    output += rs.getString(attributeNames[i]) + ", ";
+//                }
+//                System.out.printf(output+"\n");
+//            }
+            //rs.close();
+            stmt.close();
+        }
+        catch (SQLException se) {se.printStackTrace();} 
+        catch (Exception e) {e.printStackTrace();} 
+        finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException se2) { }
+        }
+    }
 }
