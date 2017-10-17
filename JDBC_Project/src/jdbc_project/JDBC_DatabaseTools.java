@@ -22,7 +22,7 @@ public class JDBC_DatabaseTools
         else
             return input;
     }
-    public static void TEST_METHOD(Connection conn)
+    public static void LIST_RESULTS_ALL(Connection conn, String tableName)
     {
         Statement stmt = null;
         try 
@@ -30,20 +30,25 @@ public class JDBC_DatabaseTools
             stmt = conn.createStatement();
             String sql;
             
-            // USE PREPARED STATEMENTS
+            // ToDo: USE PREPARED STATEMENTS
 
-            sql = "SELECT groupName, bookTitle, publisherName, yearPublished FROM books";
+            sql = "SELECT * FROM " + tableName;
+
+            System.out.printf(sql + "\n");
+            
             ResultSet rs = null;
             rs = stmt.executeQuery(sql);
-            System.out.printf(displayFormat, "groupName", "bookTitle", "publisherName", "yearPublished");
-
-            while (rs.next()) {
-                //Retrieve by column name
-                String groupName = rs.getString("groupName");
-                String bookTitle = rs.getString("bookTitle");
-                String publisherName = rs.getString("publisherName");
-                String yearPublished = rs.getString("yearPublished");
-                System.out.printf(displayFormat, dispNull(groupName), dispNull(bookTitle), dispNull(publisherName), dispNull(yearPublished));
+            
+            int columnCount = rs.getMetaData().getColumnCount();
+            while (rs.next()) 
+            {
+                String output = "";
+                for (int i = 1; i <= columnCount; i++) 
+                {
+                    output += rs.getString(rs.getMetaData().getColumnName(i)) + ", ";
+                }
+                System.out.printf(output+"\n");
+                
             }
             rs.close();
             stmt.close();
@@ -66,7 +71,7 @@ public class JDBC_DatabaseTools
             stmt = conn.createStatement();
             String sql;
             
-            // USE PREPARED STATEMENTS
+            // ToDo: USE PREPARED STATEMENTS
 
             sql = "SELECT ";
             for (int i = 0; i < attributeNames.length - 1; i++) 
@@ -75,10 +80,12 @@ public class JDBC_DatabaseTools
             }
             sql += attributeNames[attributeNames.length - 1];
             sql += " FROM " + tableName;
+            
+            System.out.printf(sql + "\n");
+            
             ResultSet rs = null;
-            System.out.printf(sql);
             rs = stmt.executeQuery(sql);
-            //System.out.printf(displayFormat, "groupName", "bookTitle", "publisherName", "yearPublished");
+            
 
             while (rs.next()) 
             {
@@ -88,12 +95,7 @@ public class JDBC_DatabaseTools
                     output += rs.getString(attributeNames[i]) + ", ";
                 }
                 System.out.printf(output+"\n");
-                //Retrieve by column name
-//                String groupName = rs.getString("groupName");
-//                String bookTitle = rs.getString("bookTitle");
-//                String publisherName = rs.getString("publisherName");
-//                String yearPublished = rs.getString("yearPublished");
-//                System.out.printf(displayFormat, dispNull(groupName), dispNull(bookTitle), dispNull(publisherName), dispNull(yearPublished));
+                
             }
             rs.close();
             stmt.close();
@@ -108,6 +110,7 @@ public class JDBC_DatabaseTools
             } catch (SQLException se2) { }
         }
     }
+    
     public static void INSERT_ROW(Connection conn, String tableName, String[] attributeNames, String[] valueNames)
     {
         Statement stmt = null;
@@ -116,7 +119,7 @@ public class JDBC_DatabaseTools
             stmt = conn.createStatement();
             String sql;
             
-            // USE PREPARED STATEMENTS
+            // ToDo: USE PREPARED STATEMENTS
 
             sql = "INSERT INTO " + tableName + " (";
             for (int i = 0; i < attributeNames.length - 1; i++) 
@@ -130,24 +133,23 @@ public class JDBC_DatabaseTools
                 sql += "'" + valueNames[i] + "'" + ", ";
             }
             sql += "'" +valueNames[valueNames.length - 1] + "')";
-            
-            //ResultSet rs = null;
-            System.out.printf(sql);
-            //rs = 
-            //stmt.
-            stmt.execute(sql);
-            //System.out.printf(displayFormat, "groupName", "bookTitle", "publisherName", "yearPublished");
 
-//            while (rs.next()) 
-//            {
-//                String output = "";
-//                for (int i = 0; i < attributeNames.length; i++) 
+            System.out.printf(sql + "\n");
+            Boolean result;
+            try
+            {
+                result = stmt.execute(sql);
+            }
+            catch(SQLException se)
+            {
+                System.out.printf("\n" + se.getMessage()+ "\n");
+                //System.out.printf("Exception found at Insert SQL: " + se.getSQLState() + "\n");
+//                if(se.getSQLState().equals("23505")) //23505
 //                {
-//                    output += rs.getString(attributeNames[i]) + ", ";
+//                    System.out.printf("Duplicate Key\n");
 //                }
-//                System.out.printf(output+"\n");
-//            }
-            //rs.close();
+            }
+
             stmt.close();
         }
         catch (SQLException se) {se.printStackTrace();} 

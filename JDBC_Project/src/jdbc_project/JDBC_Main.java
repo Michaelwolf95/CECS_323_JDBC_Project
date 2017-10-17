@@ -53,7 +53,7 @@ public class JDBC_Main
                 se.printStackTrace();
             }//end finally try
         }//end try
-        System.out.println("Goodbye!");
+        System.out.println("\nGoodbye!");
     }//end main
     
     
