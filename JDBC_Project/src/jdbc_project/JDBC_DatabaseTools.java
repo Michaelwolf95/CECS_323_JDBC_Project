@@ -110,6 +110,56 @@ public class JDBC_DatabaseTools
             } catch (SQLException se2) { }
         }
     }
+    public static void LIST_RESULTS(Connection conn, String tableName, String[] attributeNames, String compareAtrribute, String compareTarget)
+    {
+        Statement stmt = null;
+        try 
+        {       
+            stmt = conn.createStatement();
+            String sql;
+            
+            // ToDo: USE PREPARED STATEMENTS
+
+            sql = "SELECT ";
+            for (int i = 0; i < attributeNames.length - 1; i++) 
+            {
+                sql += attributeNames[i] + ", ";
+            }
+            sql += attributeNames[attributeNames.length - 1];
+            sql += " FROM " + tableName;
+            
+            //ToDo: ADD WHERE CLAUSE
+            
+            System.out.printf(sql + "\n");
+            
+            ResultSet rs = null;
+            rs = stmt.executeQuery(sql);
+            
+
+            while (rs.next()) 
+            {
+                String output = "";
+                for (int i = 0; i < attributeNames.length; i++) 
+                {
+                    output += rs.getString(attributeNames[i]) + ", ";
+                }
+                System.out.printf(output+"\n");
+                
+            }
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException se) {se.printStackTrace();} 
+        catch (Exception e) {e.printStackTrace();} 
+        finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException se2) { }
+        }
+    }
+    
     
     public static void INSERT_ROW(Connection conn, String tableName, String[] attributeNames, String[] valueNames)
     {
