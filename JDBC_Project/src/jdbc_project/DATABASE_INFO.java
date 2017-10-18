@@ -2,7 +2,7 @@ package jdbc_project;
 
 public class DATABASE_INFO 
 {
-    public static String DBNAME = "JDBC_Project";
-    public static String USER = "michaelwolf95";
-    public static String PASS = "password";
+    public static String DBNAME = "JDBC_DB";
+    public static String USER = "zzzx";
+    public static String PASS = "zzzx";
 }

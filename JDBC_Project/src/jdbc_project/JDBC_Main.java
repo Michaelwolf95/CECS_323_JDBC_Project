@@ -33,7 +33,7 @@ public class JDBC_Main
             conn = DriverManager.getConnection(DB_URL);
             
             
-            JDBC_TestApp.RunDataBaseApplication(conn);
+            dbMenu.displayMain(conn);
             
             conn.close();
         } 
