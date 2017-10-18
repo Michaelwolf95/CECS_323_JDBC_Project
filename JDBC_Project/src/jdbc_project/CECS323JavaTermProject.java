@@ -33,6 +33,7 @@ public class CECS323JavaTermProject
         System.out.print("Name of the database (not the user account): ");
         DBNAME = in.nextLine();
         System.out.print("Database user name: ");
+<<<<<<< Updated upstream
         USER = in.nextLine();
         System.out.print("Database password: ");
         PASS = in.nextLine();
@@ -41,6 +42,13 @@ public class CECS323JavaTermProject
     public static void main(String[] args) 
     {
         //GetDataBaseInfoFromInput();
+=======
+        //USER = in.nextLine();
+        USER = "zzzx";
+        System.out.print("Database password: ");
+        //PASS = in.nextLine();
+        PASS = "zzzx";
+>>>>>>> Stashed changes
         
         //Constructing the database URL connection string
         DB_URL = DB_URL + DBNAME + ";user="+ USER + ";password=" + PASS;

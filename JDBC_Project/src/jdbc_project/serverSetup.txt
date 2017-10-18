@@ -31,5 +31,5 @@ insert into writingGroups(groupName, headWriter, yearFormed, subject) values
 insert INTO publishers(publisherName, publisherAddress, publisherPhone, publisherEmail) values
 ('Akashic Books', '123 Springfield St.', 318-555-0892, 'customerhelp@akashicbooks.com');
 
-INSERT INTO book(groupName, bookTitle, publisherName, yearPublished, numberPages) values
+INSERT INTO books(groupName, bookTitle, publisherName, yearPublished, numberPages) values
 ('Coffee House Writers', 'The Last Basket Ever Woven', 'Akashic Books', 2017, 9425);
