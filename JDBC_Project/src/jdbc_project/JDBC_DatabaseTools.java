@@ -110,7 +110,7 @@ public class JDBC_DatabaseTools
             } catch (SQLException se2) { }
         }
     }
-    public static void LIST_RESULTS(Connection conn, String tableName, String[] attributeNames, String compareAtrribute, String compareTarget)
+    public static void LIST_RESULTS(Connection conn, String tableName, String[] attributeNames, String compareAttribute, String compareTarget)
     {
         Statement stmt = null;
         try 
@@ -129,6 +129,7 @@ public class JDBC_DatabaseTools
             sql += " FROM " + tableName;
             
             //ToDo: ADD WHERE CLAUSE
+            sql += " WHERE " + compareAttribute + "='" + compareTarget+"'";
             
             System.out.printf(sql + "\n");
             
