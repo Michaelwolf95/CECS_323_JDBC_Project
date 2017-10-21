@@ -8,8 +8,8 @@ import java.util.Scanner;
 import java.sql.*;
 
 public class dbMenu {
-    protected static Scanner reader = new Scanner(System.in);  // Reading from System.in
     public static void displayMain(Connection conn){
+        Scanner reader = new Scanner(System.in);  // Reading from System.in
         boolean quit = false;
         while(quit!=true){
             System.out.println("Main Menu\n");
@@ -17,7 +17,7 @@ public class dbMenu {
                 + "2. Insert Data\n"
                 + "3. Quit\n");
             
-            System.out.println("Enter Choice: ");
+            System.out.print("Enter Choice: ");
             int n = reader.nextInt();
             switch(n){
                 case 1: displayData(conn, reader);
@@ -27,8 +27,7 @@ public class dbMenu {
                 case 3: quit=true;
                         break;
             }
-        }
-            
+        }     
         reader.close(); 
     }
     
@@ -41,7 +40,7 @@ public class dbMenu {
             + "5. List ALL books\n"
             + "6. Data for a book\n");
             
-        System.out.println("Enter Choice: ");
+        System.out.print("Enter Choice: ");
         int n = reader.nextInt();
         switch(n){
             case 1: displayWritingGroups(conn);
@@ -57,7 +56,7 @@ public class dbMenu {
             case 6: displayBook(conn, reader);
                     break;
             default: break;
-            }
+        }
     }
      public static void insertData(Connection conn, Scanner reader){
          System.out.println("Manipulate Data\n");
@@ -66,7 +65,7 @@ public class dbMenu {
             + "3. Remove a book\n"
             + "Enter any other key to go back\n");
             
-        System.out.println("Enter Choice: ");
+        System.out.print("Enter Choice: ");
         int n = reader.nextInt();
         switch(n){
             case 1: addBook(conn, reader);
@@ -76,59 +75,64 @@ public class dbMenu {
             case 3: rmvBook(conn, reader);
                     break;
             default: break;
-            }
+        }
      }
      
      public static void displayWritingGroups(Connection conn){
-         JDBC_DatabaseTools.LIST_RESULTS(conn, "writingGroups", new String[]{"groupName"});
+        JDBC_DatabaseTools.LIST_RESULTS(conn, "writingGroups", new String[]{"groupName", "headWriter"});
      }
      
      public static void displayWritingGroup(Connection conn, Scanner reader){
+        reader.nextLine();            //Clear Buffer
         System.out.print("Enter Writing Group: ");
-        String wg = reader.next();
-        
+        String wg = reader.nextLine();
+        JDBC_DatabaseTools.LIST_RESULTS(conn,"WritingGroups", new String[]{"groupName", "headWriter", "yearFormed", "subject"}, "groupName", wg);
      }
 
-    private static void displayPublishers(Connection conn) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static void displayPublishers(Connection conn) {
+        JDBC_DatabaseTools.LIST_RESULTS(conn, "publishers", new String[]{"publisherName"});
     }
 
-    private static void displayPublisher(Connection conn, Scanner reader) {
+    public static void displayPublisher(Connection conn, Scanner reader) {
+        reader.nextLine();
         System.out.print("Enter Publisher: ");
-        String pub = reader.next();
+        String pub = reader.nextLine();
+        JDBC_DatabaseTools.LIST_RESULTS(conn,"publishers", new String[]{"publisherName","publisherAddress","publisherPhone", "publisherEmail"}, "publisherName", pub);
                     
     }
 
-    private static void displayBooks(Connection conn) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static void displayBooks(Connection conn) {
+        JDBC_DatabaseTools.LIST_RESULTS(conn, "books", new String[]{"bookTitle", "numberPages"}); 
     }
 
-    private static void displayBook(Connection conn, Scanner reader) {
-        System.out.print("Enter Book Title:");
-        String book = reader.next();
-                    
+    public static void displayBook(Connection conn, Scanner reader) {
+        reader.nextLine();
+        System.out.print("Enter Book Title: ");
+        String book = reader.nextLine();
+        JDBC_DatabaseTools.LIST_RESULTS(conn,"books", new String[]{"groupName", "bookTitle", "publisherName", "yearPublished", "numberPages"}, "bookTitle", book);
     }
 
-    private static void addBook(Connection conn, Scanner reader) {
+    public static void addBook(Connection conn, Scanner reader) {
+        reader.nextLine();
+        String rowInfo[]= new String[5];
         System.out.print("Enter Writing Group Name: ");
-        String grpName = reader.nextLine();
+        rowInfo[0] = reader.nextLine();
         System.out.print("Enter book name: ");
-        String bkName = reader.nextLine();
+        rowInfo[1] = reader.nextLine();
         System.out.print("Enter the publisher name: ");
-        String pubName = reader.nextLine();
+        rowInfo[2] = reader.nextLine();
         System.out.print("Publisher Year: ");
-        String pubYr = reader.nextLine();
+        rowInfo[3] = reader.nextLine();
         System.out.print("Number of Pages");
-        String pgNum = 
-        JDBD_DatabaseTools.INSERT_ROW(conn, "books", new String[]("groupName", "bookTitle", "publisherName", "yearPublished","numberPages"), 
-            new String[]())
+        rowInfo[4] = reader.nextLine();
+        JDBC_DatabaseTools.INSERT_ROW(conn, "books", new String[]{"groupName", "bookTitle", "publisherName", "yearPublished", "numberPages"}, rowInfo);
     }
 
-    private static void changePub(Connection conn, Scanner reader) {
+    public static void changePub(Connection conn, Scanner reader) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private static void rmvBook(Connection conn, Scanner reader) {
+    public static void rmvBook(Connection conn, Scanner reader) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
      
