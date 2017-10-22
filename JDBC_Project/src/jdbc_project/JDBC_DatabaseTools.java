@@ -112,29 +112,36 @@ public class JDBC_DatabaseTools
     }
     public static void LIST_RESULTS(Connection conn, String tableName, String[] attributeNames, String compareAttribute, String compareTarget)
     {
-        Statement stmt = null;
+        String sql = null;
+        PreparedStatement stmt = null;
+        if (tableName=="WritingGroups"){
+            sql = "SELECT * FROM WritingGroups WHERE groupName = ? ";
+        }else if(tableName=="publishers"){
+            sql = "SELECT * FROM publishers WHERE publisherName = ? ";
+        }else if(tableName=="books"){
+            sql = "SELECT * FROM books WHERE bookTitle = ? ";
+        }   
         try 
         {       
-            stmt = conn.createStatement();
-            String sql;
-            
-            // ToDo: USE PREPARED STATEMENTS
+            stmt = conn.prepareStatement(sql);
+            //stmt.setString(1, tableName);
+            //stmt.setString(1, compareAttribute);
+            stmt.setString(1, compareTarget);
 
-            sql = "SELECT ";
-            for (int i = 0; i < attributeNames.length - 1; i++) 
-            {
-                sql += attributeNames[i] + ", ";
-            }
-            sql += attributeNames[attributeNames.length - 1];
-            sql += " FROM " + tableName;
-            
-            //ToDo: ADD WHERE CLAUSE
-            sql += " WHERE " + compareAttribute + "='" + compareTarget+"'";
-            
-            System.out.printf(sql + "\n");
-            
-            ResultSet rs = null;
-            rs = stmt.executeQuery(sql);
+//            sql = "SELECT ";
+//            for (int i = 0; i < attributeNames.length - 1; i++) 
+//            {
+//                sql += attributeNames[i] + ", ";
+//            }
+//            sql += attributeNames[attributeNames.length - 1];
+//            sql += " FROM " + tableName;
+//            
+//            //ToDo: ADD WHERE CLAUSE
+//            sql += " WHERE " + compareAttribute + "='" + compareTarget+"'";
+//            
+//            System.out.printf(sql + "\n");
+//            
+            ResultSet rs = stmt.executeQuery();
             
 
             while (rs.next()) 
@@ -217,9 +224,10 @@ public class JDBC_DatabaseTools
     public static void INSERT_BOOK(Connection conn, String tableName, String[] attributeNames, String[] valueNames)
     {
         String sql = "INSERT INTO books VALUES(?,?,?,?,?)";
+        PreparedStatement stmt = null;
         try 
         {       
-            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt = conn.prepareStatement(sql);
             //stmt.setString(1, tableName);
             //for(int i=2; i-7<attributeNames.length-1; i++){
                 //stmt.setString(i, attributeNames[i-2]);}

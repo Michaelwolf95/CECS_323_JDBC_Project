@@ -67,7 +67,6 @@ public class dbMenu {
             
         System.out.print("Enter Choice: ");
         int n = reader.nextInt();
-        //reader.nextLine();                Clear Buffer
         switch(n){
             case 1: addBook(conn, reader);
                     break;
@@ -84,7 +83,7 @@ public class dbMenu {
      }
      
      public static void displayWritingGroup(Connection conn, Scanner reader){
-        reader.nextLine();           
+        reader.nextLine();      //Clear \n from buffer
         System.out.print("Enter Writing Group: ");
         String wg = reader.nextLine();
         JDBC_DatabaseTools.LIST_RESULTS(conn,"WritingGroups", new String[]{"groupName", "headWriter", "yearFormed", "subject"}, "groupName", wg);
@@ -95,7 +94,7 @@ public class dbMenu {
     }
 
     public static void displayPublisher(Connection conn, Scanner reader) {
-        reader.nextLine();
+        reader.nextLine();      //Clear \n from buffer
         System.out.print("Enter Publisher: ");
         String pub = reader.nextLine();
         JDBC_DatabaseTools.LIST_RESULTS(conn,"publishers", new String[]{"publisherName","publisherAddress","publisherPhone", "publisherEmail"}, "publisherName", pub);
@@ -107,14 +106,14 @@ public class dbMenu {
     }
 
     public static void displayBook(Connection conn, Scanner reader) {
-        reader.nextLine();
+        reader.nextLine();      //Clear \n from buffer
         System.out.print("Enter Book Title: ");
         String book = reader.nextLine();
         JDBC_DatabaseTools.LIST_RESULTS(conn,"books", new String[]{"groupName", "bookTitle", "publisherName", "yearPublished", "numberPages"}, "bookTitle", book);
     }
 
     public static void addBook(Connection conn, Scanner reader) {
-        reader.nextLine();
+        reader.nextLine();      //Clear \n from buffer
         String rowInfo[]= new String[5];
         System.out.print("Enter Writing Group Name: ");
         rowInfo[0] = reader.nextLine();
