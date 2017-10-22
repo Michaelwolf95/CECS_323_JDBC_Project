@@ -67,6 +67,7 @@ public class dbMenu {
             
         System.out.print("Enter Choice: ");
         int n = reader.nextInt();
+        //reader.nextLine();                Clear Buffer
         switch(n){
             case 1: addBook(conn, reader);
                     break;
@@ -83,7 +84,7 @@ public class dbMenu {
      }
      
      public static void displayWritingGroup(Connection conn, Scanner reader){
-        reader.nextLine();            //Clear Buffer
+        reader.nextLine();           
         System.out.print("Enter Writing Group: ");
         String wg = reader.nextLine();
         JDBC_DatabaseTools.LIST_RESULTS(conn,"WritingGroups", new String[]{"groupName", "headWriter", "yearFormed", "subject"}, "groupName", wg);
@@ -125,7 +126,7 @@ public class dbMenu {
         rowInfo[3] = reader.nextLine();
         System.out.print("Number of Pages");
         rowInfo[4] = reader.nextLine();
-        JDBC_DatabaseTools.INSERT_ROW(conn, "books", new String[]{"groupName", "bookTitle", "publisherName", "yearPublished", "numberPages"}, rowInfo);
+        JDBC_DatabaseTools.INSERT_BOOK(conn, "books", new String[]{"groupName", "bookTitle", "publisherName", "yearPublished", "numberPages"}, rowInfo);
     }
 
     public static void changePub(Connection conn, Scanner reader) {

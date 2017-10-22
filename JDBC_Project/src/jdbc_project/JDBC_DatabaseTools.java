@@ -181,7 +181,7 @@ public class JDBC_DatabaseTools
             sql += " VALUES (";
             for (int i = 0; i < valueNames.length - 1; i++) 
             {
-                sql += "'" + valueNames[i] + "'" + ", ";
+                    sql += "'" + valueNames[i] + "'" + ", ";
             }
             sql += "'" +valueNames[valueNames.length - 1] + "')";
 
@@ -190,6 +190,51 @@ public class JDBC_DatabaseTools
             try
             {
                 result = stmt.execute(sql);
+            }
+            catch(SQLException se)
+            {
+                System.out.printf("\n" + se.getMessage()+ "\n");
+                //System.out.printf("Exception found at Insert SQL: " + se.getSQLState() + "\n");
+//                if(se.getSQLState().equals("23505")) //23505
+//                {
+//                    System.out.printf("Duplicate Key\n");
+//                }
+            }
+
+            stmt.close();
+        }
+        catch (SQLException se) {se.printStackTrace();} 
+        catch (Exception e) {e.printStackTrace();} 
+        finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException se2) { }
+        }
+    }
+    
+    public static void INSERT_BOOK(Connection conn, String tableName, String[] attributeNames, String[] valueNames)
+    {
+        String sql = "INSERT INTO books VALUES(?,?,?,?,?)";
+        try 
+        {       
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            //stmt.setString(1, tableName);
+            //for(int i=2; i-7<attributeNames.length-1; i++){
+                //stmt.setString(i, attributeNames[i-2]);}
+            for(int i=0; i<valueNames.length; i++){
+                if( tableName=="books" && i>2){
+                     int strVal = Integer.parseInt(valueNames[i]);
+                     stmt.setInt(i+1, strVal);
+                 }else{
+                    stmt.setString(i+1, valueNames[i]);
+                 }
+            }
+            try
+            {
+                int i = stmt.executeUpdate();
+                System.out.println(i+" record(s) affected");
             }
             catch(SQLException se)
             {
