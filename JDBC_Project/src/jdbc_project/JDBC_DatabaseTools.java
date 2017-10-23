@@ -266,4 +266,40 @@ public class JDBC_DatabaseTools
             } catch (SQLException se2) { }
         }
     }
+    
+        public static void REMOVE_BOOK(Connection conn, String bookTitle)
+    {
+        String sql = "DELETE FROM books WHERE bookTitle= ? ";
+        PreparedStatement stmt = null;
+        try 
+        {       
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, bookTitle);
+            try
+            {
+                int i = stmt.executeUpdate();
+                System.out.println(i+" record(s) affected");
+            }
+            catch(SQLException se)
+            {
+                System.out.printf("\n" + se.getMessage()+ "\n");
+                //System.out.printf("Exception found at Insert SQL: " + se.getSQLState() + "\n");
+//                if(se.getSQLState().equals("23505")) //23505
+//                {
+//                    System.out.printf("Duplicate Key\n");
+//                }
+            }
+
+            stmt.close();
+        }
+        catch (SQLException se) {se.printStackTrace();} 
+        catch (Exception e) {e.printStackTrace();} 
+        finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException se2) { }
+        }
+    }
 }

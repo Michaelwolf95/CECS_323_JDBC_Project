@@ -14,7 +14,7 @@ public class dbMenu {
         while(quit!=true){
             System.out.println("Main Menu\n");
             System.out.print("1. Display Data\n"
-                + "2. Insert Data\n"
+                + "2. Manipulate Data\n"
                 + "3. Quit\n");
             
             System.out.print("Enter Choice: ");
@@ -133,7 +133,10 @@ public class dbMenu {
     }
 
     public static void rmvBook(Connection conn, Scanner reader) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        reader.nextLine();
+        System.out.print("Enter book to be removed: ");
+        String bookTitle = reader.nextLine();
+        JDBC_DatabaseTools.REMOVE_BOOK(conn, bookTitle);
     }
      
      
