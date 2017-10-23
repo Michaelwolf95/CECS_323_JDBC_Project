@@ -14,6 +14,7 @@ public class dbMenu {
         Scanner reader = new Scanner(System.in);  // Reading from System.in
         boolean quit = false;
         while(quit!=true){
+            n = 0;
             System.out.println("==================");
             System.out.println("Main Menu");
             System.out.println("==================");
