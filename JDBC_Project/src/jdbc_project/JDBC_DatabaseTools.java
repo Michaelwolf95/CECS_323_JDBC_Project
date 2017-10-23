@@ -120,49 +120,39 @@ public class JDBC_DatabaseTools
     }
     public static void LIST_RESULTS(Connection conn, String tableName, String[] attributeNames, String compareAttribute, String compareTarget)
     {
-        //System.err.println("TEST");
         String sql = null;
         PreparedStatement stmt = null;
-        if (tableName=="WritingGroups"){
-            sql = "SELECT * FROM WritingGroups WHERE groupName = ? ";
-        }else if(tableName=="publishers"){
-            sql = "SELECT * FROM publishers WHERE publisherName = ? ";
-        }else if(tableName=="books"){
-            sql = "SELECT * FROM books WHERE bookTitle = ? ";
-        }   
+//        if (tableName=="WritingGroups"){
+//            sql = "SELECT * FROM WritingGroups WHERE groupName = ? ";
+//        }else if(tableName=="publishers"){
+//            sql = "SELECT * FROM publishers WHERE publisherName = ? ";
+//        }else if(tableName=="books"){
+//            sql = "SELECT * FROM books WHERE bookTitle = ? ";
+//        }   
         try 
         {       
-            stmt = conn.prepareStatement(sql);
-            //stmt.setString(1, tableName);
-            //stmt.setString(1, compareAttribute);
-            stmt.setString(1, compareTarget);
+            //stmt = conn.prepareStatement(sql);
+            //stmt.setString(1, compareTarget);
 
-//            sql = "SELECT ";
-//            for (int i = 0; i < attributeNames.length - 1; i++) 
-//            {
-//                sql += attributeNames[i] + ", ";
-//            }
-//            sql += attributeNames[attributeNames.length - 1];
-//            sql += " FROM " + tableName;
-//            
-//            //ToDo: ADD WHERE CLAUSE
-//            sql += " WHERE " + compareAttribute + "='" + compareTarget+"'";
-//            
-//            System.out.printf(sql + "\n");
-//            
-            ResultSet rs = stmt.executeQuery();
+            sql = "SELECT ";
+            for (int i = 0; i < attributeNames.length - 1; i++) 
+            {
+                sql += attributeNames[i] + ", ";
+            }
+            sql += attributeNames[attributeNames.length - 1];
+            sql += " FROM " + tableName;
+            sql += " WHERE " + compareAttribute + " = ?";
             
-            if(!rs.next())
-            {
-                System.out.println("ERROR: NO VALUES");
-                System.out.println("The table '"+tableName+"' contains no values corresponding with '" + compareTarget + "'." );
-            }
-            else
-            {
-                rs.first();
-            }
+            //System.out.printf(sql + "\n");
+            
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, compareTarget);
+            ResultSet rs = stmt.executeQuery();
+
+            int resultCount = 0;
             while (rs.next()) 
             {
+                resultCount++;
                 String output = "";
                 for (int i = 0; i < attributeNames.length-1; i++) 
                 {
@@ -170,11 +160,12 @@ public class JDBC_DatabaseTools
                 }
                 output += rs.getString(attributeNames[attributeNames.length-1]) + ". ";
                 System.out.printf(output+"\n");
-                
             }
-//            Exception e = new Exception(new Throwable("java.lang.NullPointerException"));
-//            if(e != null)
-//                throw e;
+            if(resultCount <= 0)
+            {
+                System.out.println("ERROR: NO VALUES");
+                System.out.println("The table '"+tableName+"' contains no values corresponding with '" + compareTarget + "'." );
+            }
             rs.close();
             stmt.close();
         }
@@ -265,8 +256,16 @@ public class JDBC_DatabaseTools
                 //stmt.set
                 if( tableName=="books" && i>2)
                 {
-                     int strVal = Integer.parseInt(valueNames[i]);
-                     stmt.setInt(i+1, strVal);
+                    try
+                    {
+                        int strVal = Integer.parseInt(valueNames[i]);
+                        stmt.setInt(i+1, strVal);
+                    }
+                    catch(Exception e)
+                    {
+                        stmt.setInt(i+1, 0);
+                    }
+                     
                  }else{
                     stmt.setString(i+1, valueNames[i]);
                  }
@@ -274,11 +273,12 @@ public class JDBC_DatabaseTools
             try
             {
                 int i = stmt.executeUpdate();
+                System.out.println("Successfully Added Book.");
                 System.out.println(i+" record(s) affected");
             }
             catch(SQLException se)
             {
-                System.out.printf("\n" + se.getMessage()+ "\n");
+                System.out.println("\n" + se.getMessage());
                 //System.out.printf("Exception found at Insert SQL: " + se.getSQLState() + "\n");
 //                if(se.getSQLState().equals("23505")) //23505
 //                {
@@ -310,6 +310,7 @@ public class JDBC_DatabaseTools
             try
             {
                 int i = stmt.executeUpdate();
+                System.out.println("Successfully Removed Book.");
                 System.out.println(i+" record(s) affected");
             }
             catch(SQLException se)
@@ -349,11 +350,13 @@ public class JDBC_DatabaseTools
             try
             {
                 int i = stmt.executeUpdate();
+                System.out.println("Successfully Added Publisher");
                 System.out.println(i+" record(s) affected");
             }
             catch(SQLException se)
             {
-                System.out.printf("\n" + se.getMessage()+ "\n");
+                System.out.println("Could not add publisher to database because it already exists.");
+                //System.out.printf("\n" + se.getMessage()+ "\n");
                 //System.out.printf("Exception found at Insert SQL: " + se.getSQLState() + "\n");
 //                if(se.getSQLState().equals("23505")) //23505
 //                {
@@ -368,6 +371,7 @@ public class JDBC_DatabaseTools
             try
             {
                 int i = stmt.executeUpdate();
+                System.out.println("Successfully Changed Publisher for " + i + " Books.");
                 System.out.println(i+" record(s) affected");
             }
             catch(SQLException se)
