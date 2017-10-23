@@ -14,8 +14,9 @@ public class dbMenu {
         Scanner reader = new Scanner(System.in);  // Reading from System.in
         boolean quit = false;
         while(quit!=true){
-            //System.out.println();
-            System.out.println("Main Menu\n");
+            System.out.println("==================");
+            System.out.println("Main Menu");
+            System.out.println("==================");
             System.out.print("1. Display Data\n"
                 + "2. Manipulate Data\n"
                 + "3. Quit\n");
@@ -36,22 +37,27 @@ public class dbMenu {
                 case 3: quit=true;
                         break;
             }
-            System.out.println();
-            System.out.print("Press Any Key to Continue...");
-            try
+            if(quit!=true)
             {
-                System.in.read();
+                System.out.println();
+                System.out.print("Press Any Key to Continue...");
+                try
+                {
+                    System.in.read();
+                }
+                catch(Exception e) {}
+
+                System.out.println();
             }
-            catch(Exception e) {}
-            
-            System.out.println();
         }     
         reader.close(); 
     }
     
     public static void displayData(Connection conn, Scanner reader){
         int n = 0;
-        System.out.println("List Information\n");
+        System.out.println("==================");
+        System.out.println("List Information");
+        System.out.println("==================");
          System.out.print(
               "1. List ALL writing groups\n"
             + "2. Data for a writing group\n"
@@ -82,7 +88,9 @@ public class dbMenu {
     }
      public static void insertData(Connection conn, Scanner reader){
          int n = 0;
-         System.out.println("Manipulate Data\n");
+         System.out.println("==================");
+         System.out.println("Manipulate Data");
+         System.out.println("==================");
          System.out.print("1. Add a book\n"
             + "2. Change publisher\n"
             + "3. Remove a book\n"
@@ -104,10 +112,16 @@ public class dbMenu {
      }
      
      public static void displayWritingGroups(Connection conn){
+         System.out.println("==================");
+         System.out.println("Display Writing Groups");
+         System.out.println("==================");
         JDBC_DatabaseTools.LIST_RESULTS(conn, "writingGroups", new String[]{"groupName", "headWriter"});
      }
      
      public static void displayWritingGroup(Connection conn, Scanner reader){
+         System.out.println("==================");
+         System.out.println("Display A Writing Group");
+         System.out.println("==================");
         reader.nextLine();      //Clear \n from buffer
         System.out.print("Enter Writing Group: ");
         String wg = reader.nextLine();
@@ -115,10 +129,16 @@ public class dbMenu {
      }
 
     public static void displayPublishers(Connection conn) {
+        System.out.println("==================");
+         System.out.println("Display Publishers");
+         System.out.println("==================");
         JDBC_DatabaseTools.LIST_RESULTS(conn, "publishers", new String[]{"publisherName"});
     }
 
     public static void displayPublisher(Connection conn, Scanner reader) {
+        System.out.println("==================");
+         System.out.println("Display A Publisher");
+         System.out.println("==================");
         reader.nextLine();      //Clear \n from buffer
         System.out.print("Enter Publisher: ");
         String pub = reader.nextLine();
@@ -127,10 +147,16 @@ public class dbMenu {
     }
 
     public static void displayBooks(Connection conn) {
+        System.out.println("==================");
+         System.out.println("Display Books");
+         System.out.println("==================");
         JDBC_DatabaseTools.LIST_RESULTS(conn, "books", new String[]{"bookTitle", "publisherName"}); 
     }
 
     public static void displayBook(Connection conn, Scanner reader) {
+        System.out.println("==================");
+        System.out.println("Display A Book");
+        System.out.println("==================");
         reader.nextLine();      //Clear \n from buffer
         System.out.print("Enter Book Title: ");
         String book = reader.nextLine();
@@ -138,6 +164,9 @@ public class dbMenu {
     }
 
     public static void addBook(Connection conn, Scanner reader) {
+        System.out.println("==================");
+        System.out.println("Add a Book");
+        System.out.println("==================");
         reader.nextLine();      //Clear \n from buffer
         String rowInfo[]= new String[5];
         System.out.print("Enter Writing Group Name: ");
@@ -154,6 +183,9 @@ public class dbMenu {
     }
 
     public static void changePub(Connection conn, Scanner reader) {
+        System.out.println("==================");
+        System.out.println("Change a Publisher");
+        System.out.println("==================");
         reader.nextLine();
         String newPub[] = new String[4];
         System.out.print("Old publisher name: ");
@@ -170,6 +202,9 @@ public class dbMenu {
     }
 
     public static void rmvBook(Connection conn, Scanner reader) {
+        System.out.println("==================");
+        System.out.println("Remove A Book");
+        System.out.println("==================");
         reader.nextLine();
         System.out.print("Enter book to be removed: ");
         String bookTitle = reader.nextLine();
