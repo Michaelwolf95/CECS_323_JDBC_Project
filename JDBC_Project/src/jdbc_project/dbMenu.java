@@ -129,7 +129,19 @@ public class dbMenu {
     }
 
     public static void changePub(Connection conn, Scanner reader) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        reader.nextLine();
+        String newPub[] = new String[4];
+        System.out.print("Old publisher name: ");
+        String oldPub = reader.nextLine();
+        System.out.print("New publisher name: ");
+        newPub[0] = reader.nextLine();
+        System.out.print("New publisher address: ");
+        newPub[1] = reader.nextLine();
+        System.out.print("New publisher email address: ");
+        newPub[2] = reader.nextLine();
+        System.out.print("New publisher phone number: ");
+        newPub[3] = reader.nextLine();
+        JDBC_DatabaseTools.CHANGE_PUBLISHER(conn, oldPub, newPub);
     }
 
     public static void rmvBook(Connection conn, Scanner reader) {

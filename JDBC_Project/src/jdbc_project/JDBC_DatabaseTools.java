@@ -302,4 +302,56 @@ public class JDBC_DatabaseTools
             } catch (SQLException se2) { }
         }
     }
+        
+    public static void CHANGE_PUBLISHER(Connection conn, String oldPub, String[] newPub)
+    {
+        String sql = "INSERT INTO publishers VALUES(?,?,?,?)";
+        PreparedStatement stmt = null;
+        try 
+        {       
+            stmt = conn.prepareStatement(sql);
+            for(int i=0; i<newPub.length; i++){
+                stmt.setString(i+1, newPub[i]);
+            }
+            
+            try
+            {
+                int i = stmt.executeUpdate();
+                System.out.println(i+" record(s) affected");
+            }
+            catch(SQLException se)
+            {
+                System.out.printf("\n" + se.getMessage()+ "\n");
+                //System.out.printf("Exception found at Insert SQL: " + se.getSQLState() + "\n");
+//                if(se.getSQLState().equals("23505")) //23505
+//                {
+//                    System.out.printf("Duplicate Key\n");
+//                }
+            }
+            
+            sql = "UPDATE books SET publisherName = ? WHERE publisherName = ?" ;
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, newPub[0]);
+            stmt.setString(2, oldPub);
+            try
+            {
+                int i = stmt.executeUpdate();
+                System.out.println(i+" record(s) affected");
+            }
+            catch(SQLException se)
+            {
+                System.out.printf("\n" + se.getMessage()+ "\n");
+            }
+            stmt.close();
+        }
+        catch (SQLException se) {se.printStackTrace();} 
+        catch (Exception e) {e.printStackTrace();} 
+        finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException se2) { }
+        }
+    }
 }

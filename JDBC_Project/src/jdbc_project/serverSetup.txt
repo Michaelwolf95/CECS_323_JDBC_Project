@@ -8,7 +8,7 @@ CONSTRAINT wg_pk PRIMARY KEY (groupName));
 CREATE TABLE publishers(
 publisherName varchar(100) NOT NULL,
 publisherAddress varchar(100),
-publisherPhone int,
+publisherPhone varchar(11),
 publisherEmail varchar(100),
 CONSTRAINT pub_pk PRIMARY KEY (publisherName));
 
@@ -33,3 +33,9 @@ insert INTO publishers(publisherName, publisherAddress, publisherPhone, publishe
 
 INSERT INTO books(groupName, bookTitle, publisherName, yearPublished, numberPages) values
 ('Coffee House Writers', 'The Last Basket Ever Woven', 'Akashic Books', 2017, 9425);
+
+ALTER TABLE publishers
+ADD publisherPhone varchar(11);
+
+ALTER TABLE publishers
+DROP COLUMN publisherPhone;
