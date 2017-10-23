@@ -14,6 +14,7 @@ public class dbMenu {
         Scanner reader = new Scanner(System.in);  // Reading from System.in
         boolean quit = false;
         while(quit!=true){
+            //System.out.println();
             System.out.println("Main Menu\n");
             System.out.print("1. Display Data\n"
                 + "2. Manipulate Data\n"
@@ -23,6 +24,10 @@ public class dbMenu {
             try{
                 n = reader.nextInt();
             }catch(InputMismatchException IE){}
+            catch(Exception e)
+            {
+                System.err.println("SOME EXCEPTION WAS FOUND");
+            }
             switch(n){
                 case 1: displayData(conn, reader);
                         break;
@@ -31,6 +36,15 @@ public class dbMenu {
                 case 3: quit=true;
                         break;
             }
+            System.out.println();
+            System.out.print("Press Any Key to Continue...");
+            try
+            {
+                System.in.read();
+            }
+            catch(Exception e) {}
+            
+            System.out.println();
         }     
         reader.close(); 
     }
@@ -38,7 +52,8 @@ public class dbMenu {
     public static void displayData(Connection conn, Scanner reader){
         int n = 0;
         System.out.println("List Information\n");
-         System.out.print("1.List ALL writing groups\n"
+         System.out.print(
+              "1. List ALL writing groups\n"
             + "2. Data for a writing group\n"
             + "3. List ALL publishers\n"
             + "4. Data for a publisher\n"
@@ -133,7 +148,7 @@ public class dbMenu {
         rowInfo[2] = reader.nextLine();
         System.out.print("Publisher Year: ");
         rowInfo[3] = reader.nextLine();
-        System.out.print("Number of Pages");
+        System.out.print("Number of Pages: ");
         rowInfo[4] = reader.nextLine();
         JDBC_DatabaseTools.INSERT_BOOK(conn, "books", new String[]{"groupName", "bookTitle", "publisherName", "yearPublished", "numberPages"}, rowInfo);
     }

@@ -24,41 +24,47 @@ public class JDBC_DatabaseTools
     }
     public static void LIST_RESULTS_ALL(Connection conn, String tableName)
     {
-        Statement stmt = null;
+        //Statement stmt = null;
+        PreparedStatement pStmt = null;
         try 
         {       
-            stmt = conn.createStatement();
+            //stmt = conn.createStatement();
             String sql;
-            
-            // ToDo: USE PREPARED STATEMENTS
+            //sql = "SELECT * FROM " + tableName;
+            sql = "SELECT * FROM ?";
 
-            sql = "SELECT * FROM " + tableName;
-
-            System.out.printf(sql + "\n");
+            pStmt = conn.prepareStatement(sql);
             
             ResultSet rs = null;
-            rs = stmt.executeQuery(sql);
+            //rs = stmt.executeQuery(sql);
+            rs = pStmt.executeQuery();
             
             int columnCount = rs.getMetaData().getColumnCount();
             while (rs.next()) 
             {
                 String output = "";
-                for (int i = 1; i <= columnCount; i++) 
+                for (int i = 1; i < columnCount; i++) 
                 {
                     output += rs.getString(rs.getMetaData().getColumnName(i)) + ", ";
                 }
+                 output += rs.getString(rs.getMetaData().getColumnName(columnCount)) + ". ";
                 System.out.printf(output+"\n");
                 
             }
             rs.close();
-            stmt.close();
+            //stmt.close();
+            pStmt.close();
         }
-        catch (SQLException se) {se.printStackTrace();} 
+        catch (SQLException se) 
+        {
+            se.printStackTrace();
+        } 
         catch (Exception e) {e.printStackTrace();} 
         finally {
             try {
-                if (stmt != null) {
-                    stmt.close();
+                if (pStmt != null) {
+                    //stmt.close();
+                    pStmt.close();
                 }
             } catch (SQLException se2) { }
         }
@@ -73,6 +79,7 @@ public class JDBC_DatabaseTools
             
             // ToDo: USE PREPARED STATEMENTS
 
+            
             sql = "SELECT ";
             for (int i = 0; i < attributeNames.length - 1; i++) 
             {
@@ -81,7 +88,7 @@ public class JDBC_DatabaseTools
             sql += attributeNames[attributeNames.length - 1];
             sql += " FROM " + tableName;
             
-            System.out.printf(sql + "\n");
+            //System.out.printf(sql + "\n");
             
             ResultSet rs = null;
             rs = stmt.executeQuery(sql);
@@ -90,10 +97,11 @@ public class JDBC_DatabaseTools
             while (rs.next()) 
             {
                 String output = "";
-                for (int i = 0; i < attributeNames.length; i++) 
+                for (int i = 0; i < attributeNames.length-1; i++) 
                 {
                     output += rs.getString(attributeNames[i]) + ", ";
                 }
+                output += rs.getString(attributeNames[attributeNames.length-1]) + ". ";
                 System.out.printf(output+"\n");
                 
             }
@@ -112,6 +120,7 @@ public class JDBC_DatabaseTools
     }
     public static void LIST_RESULTS(Connection conn, String tableName, String[] attributeNames, String compareAttribute, String compareTarget)
     {
+        //System.err.println("TEST");
         String sql = null;
         PreparedStatement stmt = null;
         if (tableName=="WritingGroups"){
@@ -143,21 +152,37 @@ public class JDBC_DatabaseTools
 //            
             ResultSet rs = stmt.executeQuery();
             
-
+            if(!rs.next())
+            {
+                System.out.println("ERROR: NO VALUES");
+                System.out.println("The table '"+tableName+"' contains no values corresponding with '" + compareTarget + "'." );
+            }
+            else
+            {
+                rs.first();
+            }
             while (rs.next()) 
             {
                 String output = "";
-                for (int i = 0; i < attributeNames.length; i++) 
+                for (int i = 0; i < attributeNames.length-1; i++) 
                 {
                     output += rs.getString(attributeNames[i]) + ", ";
                 }
+                output += rs.getString(attributeNames[attributeNames.length-1]) + ". ";
                 System.out.printf(output+"\n");
                 
             }
+//            Exception e = new Exception(new Throwable("java.lang.NullPointerException"));
+//            if(e != null)
+//                throw e;
             rs.close();
             stmt.close();
         }
-        catch (SQLException se) {se.printStackTrace();} 
+        catch (SQLException se) 
+        {
+            se.printStackTrace();
+            
+        } 
         catch (Exception e) {e.printStackTrace();} 
         finally {
             try {
@@ -172,6 +197,10 @@ public class JDBC_DatabaseTools
     public static void INSERT_ROW(Connection conn, String tableName, String[] attributeNames, String[] valueNames)
     {
         Statement stmt = null;
+        
+        //PreparedStatement pStmt = null;
+        //String pStmtString = "INSERT INTO ? (?";
+        
         try 
         {       
             stmt = conn.createStatement();
@@ -231,8 +260,11 @@ public class JDBC_DatabaseTools
             //stmt.setString(1, tableName);
             //for(int i=2; i-7<attributeNames.length-1; i++){
                 //stmt.setString(i, attributeNames[i-2]);}
-            for(int i=0; i<valueNames.length; i++){
-                if( tableName=="books" && i>2){
+            for(int i=0; i<valueNames.length; i++)
+            {
+                //stmt.set
+                if( tableName=="books" && i>2)
+                {
                      int strVal = Integer.parseInt(valueNames[i]);
                      stmt.setInt(i+1, strVal);
                  }else{
