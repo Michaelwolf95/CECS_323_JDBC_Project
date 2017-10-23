@@ -6,9 +6,11 @@ package jdbc_project;
 
 import java.util.Scanner;
 import java.sql.*;
+import java.util.InputMismatchException;
 
 public class dbMenu {
     public static void displayMain(Connection conn){
+        int n = 0;
         Scanner reader = new Scanner(System.in);  // Reading from System.in
         boolean quit = false;
         while(quit!=true){
@@ -18,7 +20,9 @@ public class dbMenu {
                 + "3. Quit\n");
             
             System.out.print("Enter Choice: ");
-            int n = reader.nextInt();
+            try{
+                n = reader.nextInt();
+            }catch(InputMismatchException IE){}
             switch(n){
                 case 1: displayData(conn, reader);
                         break;
@@ -32,6 +36,7 @@ public class dbMenu {
     }
     
     public static void displayData(Connection conn, Scanner reader){
+        int n = 0;
         System.out.println("List Information\n");
          System.out.print("1.List ALL writing groups\n"
             + "2. Data for a writing group\n"
@@ -41,7 +46,9 @@ public class dbMenu {
             + "6. Data for a book\n");
             
         System.out.print("Enter Choice: ");
-        int n = reader.nextInt();
+        try{
+            n = reader.nextInt();
+        }catch(InputMismatchException IE){}
         switch(n){
             case 1: displayWritingGroups(conn);
                     break;
@@ -59,6 +66,7 @@ public class dbMenu {
         }
     }
      public static void insertData(Connection conn, Scanner reader){
+         int n = 0;
          System.out.println("Manipulate Data\n");
          System.out.print("1. Add a book\n"
             + "2. Change publisher\n"
@@ -66,7 +74,9 @@ public class dbMenu {
             + "Enter any other key to go back\n");
             
         System.out.print("Enter Choice: ");
-        int n = reader.nextInt();
+        try{
+            n = reader.nextInt();
+        }catch(InputMismatchException IE){}
         switch(n){
             case 1: addBook(conn, reader);
                     break;
@@ -102,7 +112,7 @@ public class dbMenu {
     }
 
     public static void displayBooks(Connection conn) {
-        JDBC_DatabaseTools.LIST_RESULTS(conn, "books", new String[]{"bookTitle", "numberPages"}); 
+        JDBC_DatabaseTools.LIST_RESULTS(conn, "books", new String[]{"bookTitle", "publisherName"}); 
     }
 
     public static void displayBook(Connection conn, Scanner reader) {

@@ -8,8 +8,8 @@ CONSTRAINT wg_pk PRIMARY KEY (groupName));
 CREATE TABLE publishers(
 publisherName varchar(100) NOT NULL,
 publisherAddress varchar(100),
-publisherPhone varchar(11),
 publisherEmail varchar(100),
+publisherPhone varchar(11),
 CONSTRAINT pub_pk PRIMARY KEY (publisherName));
 
 CREATE TABLE books(
